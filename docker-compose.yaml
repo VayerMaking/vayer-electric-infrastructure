@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  # TODO - use images from docker hub
+  frontend:
+    build: ./vayer-electric-frontend
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - vayer-electric-backend
+
+  # TODO - use images from docker hub
+  vayer-electric-backend:
+    build: ./vayer-electric-backend
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  # TODO - use images from docker hub
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+networks:
+  vayer-electric-network:
+    driver: bridge
