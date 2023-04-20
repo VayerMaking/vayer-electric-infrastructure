@@ -13,18 +13,16 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
 
-  # TODO - use images from docker hub
   frontend:
-    build: ./vayer-electric-frontend
+    build: vayer:vayer-electric-frontend:latest
     restart: always
     ports:
       - 3000:3000
     depends_on:
       - vayer-electric-backend
 
-  # TODO - use images from docker hub
   vayer-electric-backend:
-    build: ./vayer-electric-backend
+    build: vayer:vayer-electric-frontend:latest
     restart: always
     ports:
       - 8080:8080
